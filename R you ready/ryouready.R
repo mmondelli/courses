@@ -1,27 +1,28 @@
 ## Pacotes  ##########
 install.packages('plyr', 'magittr')       # Para instalar pacotes
 library(plyr)                  # Para carregar pacotes
+library(magrittr)
 packageVersion("plyr")         # Verificar versão
 sessionInfo()                  # Infos sobre a sessão atual do R (inclusive pacotes carregados)
 
 ## Help ##################################################
-help.search("mean")
-??mean
-?mean
+help.search("mean")         # Procura documentações que possuam a palavra passada como parâmetro
+??mean                      # Mesmo que o anterior
+?mean                       # Manual da função mean
 
 # ctrl+l: limpa os comandos do console
 
 ## Diretório de trabalho ##########
-getwd() # Mostra o diretório atual
-setwd('~/Dropbox/Cursos/R you ready/') # Muda de diretório
+getwd()                                   # Mostra o diretório atual
+setwd('~/Dropbox/Cursos/R you ready/')    # Muda de diretório (Ajuste o seu aqui!)
 
 ## Input ###########
-5 + 2
-sqrt(121)
+5 + 2             # Calcula e apresenta o resultado
+sqrt(121)         # O mesmo, mas utilizando a função de sqrt
 
-x <- 5 + 2
-print(x)
-x
+x <- 5 + 2        # Atribui o resultado à uma variável, não imprime no console
+print(x)          # Para imprimir o conteúdo da variável 
+x                 # Outra forma de imprimir
 
 y <- sqrt(121)
 y
@@ -30,7 +31,7 @@ y
 
 # Numérico
 valor <- 60.5
-typeof(valor)
+typeof(valor)          # Função para verificar qual o tipo de dado de uma variável
 
 # Caracteres
 string <- "Olá, mundo!"
@@ -44,47 +45,63 @@ typeof(logico)
 complexo <- 2 + 3i
 typeof(complexo)
 
+# Fatores (variáveis categóricas)
+meses <- c("Dez", "Abr", "Jan", "Mar")          # Cria um vetor de strings
+
+meses.levels <- c(
+  "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", 
+  "Jul", "Ago", "Set", "Out", "Nov", "Dez"
+)                                               # Cria um vetor de strings, vai ser utilizado como 'nível'
+
+f <- factor(meses, levels = meses.levels)       # Define que o vetor possui variáveis categóricas
+
+sort(f)                                         # Ordena 
+
+meses <- c("Dec", "Apr", "Jan", "Mar")          # Criando um vetor que não está de acordo com os níveis
+
+f <- factor(meses, levels = meses.levels); f
+
 ## Sequências, repetições e dados aleatórios ####
 
 # Repetições
-rep(1:5, times = 2)
+rep(1:5, times = 2)          # Cria uma seq. de números (1 a 5) e repete cada um duas vezes
 rep(c(1, 2, 3), times = 3)
 
 ## Sua vez: Criar uma repetição de dois números
 ## O primeiro deve ser repetido 5 vezes, o segundo 3 vezes
-rep(c(4, 2), times = c(5,3))
+
 
 # Sequências
-seq(from = 1, to = 3)
+seq(from = 1, to = 3)             # Cria uma sequência com início e fim
 seq(1,3)
-seq(1,10, by = 0.5)
-seq(10, -3, length.out = 9)
+seq(1,10, by = 0.5)               # Cria sequência e define um intervalo entre os valores
+seq(10, -3, length.out = 9)       # Cria sequência (inicio e fim) e a quantidade total de elementos
 
 # Dados aleatórios
-set.seed(1)
-x <- rnorm(100)
-y <- runif(100)
+set.seed(1)                 # Gerador de números aleatórios
+x <- rnorm(100)             # Cria 100 números aleatórios (distribuição normal)
+y <- runif(100)             # O mesmo, para outro tipo de distribuição
 
 set.seed(5)
-sample(LETTERS[1:3], 12, replace=TRUE)
+sample(LETTERS[1:3], 12, replace=TRUE)         # Outra forma de criar dados aleatórios
 
 ## Objetos no R ##########
 # 1. Vetores
 my.vector <- c(1,6,7,3,8,0)
 
 # 2. Matrizes
-my.matrix <- matrix(1:12, nrow=4, ncol=3)
+my.matrix <- matrix(1:12, nrow = 4, ncol = 3)
 
 # 4. Dataframes
 my.df <- data.frame(nome = c("Maria","João","José","Gabriela"), 
-                          nota = c(10, 9, 7, 9))
+                    nota = c(10, 9, 7, 9))
 
 # 5. Listas
 my.list <- list(10, "ABC", TRUE, 1 + 2)
 
 # 6. Funções
 jogar.moeda <- function(x, n){
-  sample(x, n, replace=T)
+  sample(x, n, replace = T)
 } 
 moeda <- c("Cara", "Coroa")
 jogar.moeda(moeda, 10)
@@ -145,7 +162,7 @@ mean(my.df$`Nota 1`, na.rm = TRUE)
 
 ## Estruturas de controle ##########
 
-# IF
+# If
 x <- 1
 
 if (x * 5 > 40){
@@ -154,15 +171,26 @@ if (x * 5 > 40){
   print("É menor!")
 }
 
-# FOR
+# For
 y <- c(33, 65, 76, 23, 11)
 
 for(i in 1:4){
   print (y[i])
 }
 
-## 
+# Simplificando o for em alguns casos: apply
 
+m <- matrix(1:12, nrow = 3, byrow = TRUE); m
+apply(m, 1, sum) # Aplica a função soma em cada linha da matriz
+apply(m, 2, sum) # Aplica a função soma em cada coluna da matriz
+
+l <- list(a = c(1.25, 1.54,1.45), 
+          b = c(45,50,53),
+          data = data.frame(a = rep(1:5,each=2),b = rnorm(10))); l
+
+lapply(l, sum) # Soma os elementos da lista e retorna uma lista com os valores
+sapply(l, sum) # O mesmo do anterior, mas retorna um vetor
+lapply(l$data, sum) # Soma do elemento dataframe, por coluna
 
 ## Trabalhando com dados ##########
 
@@ -174,31 +202,26 @@ chemicalsDisease.df <- read.csv("https://www.crowdflower.com/wp-content/uploads/
 # De um arquivo
 chemicalsDisease2.df <- read.csv("./data/chemicals-and-disease.csv")
 
-colnames(chemicalsDisease.df); ncol(chemicalsDisease.df)
+colnames(chemicalsDisease.df); ncol(chemicalsDisease.df)    # Verifica o nome das colunas; número de colunas
 colnames(chemicalsDisease2.df); ncol(chemicalsDisease2.df)
 
 #Escrita em arquivos
 
-myChemicalsDisease.df <- chemicalsDisease.df[,c(7, 8, 11, 13)]
+myChemicalsDisease.df <- chemicalsDisease.df[, c(7, 8, 11, 13)]   # Pegando apenas algumas colunas do dataframe
 head(myChemicalsDisease.df)
-write.csv(myChemicalsDisease.df, "./data/myChemicalsDisease.csv")
+write.csv(myChemicalsDisease.df, "./data/myChemicalsDisease.csv") # Salvando o novo dataframe em um arquivo
 
 ## Manipulando/Explorando dataframes ##########
 
 ## 1. Chemical/Disease dataset ####
 # Limpando o dataset anterior
-myChemicalsDisease.df$disease_name[1:10]
-?gsub
+myChemicalsDisease.df$disease_name[1:10]     # A coluna disease_name contém 'sujeira'
+?gsub                                        # Função para substituir partes de strings
 gsub('.*<span class="disease">|</span>.*', "", myChemicalsDisease.df$disease_name[1])
 myChemicalsDisease.df$disease_name <- gsub('.*<span class="disease">|</span>.*', "", myChemicalsDisease.df$disease_name)
 myChemicalsDisease.df$disease_name[1:10]
 
 # Sua vez: fazer o mesmo para a coluna 'chemical_name'
-myChemicalsDisease.df$chemical_name[1:10]
-?gsub
-gsub('.*<span class="chemical">|</span>.*', "", myChemicalsDisease.df$chemical_name[1])
-myChemicalsDisease.df$chemical_name <- gsub('.*<span class="chemical">|</span>.*', "", myChemicalsDisease.df$chemical_name)
-myChemicalsDisease.df$chemical_name[1:10]
 
 # Sua vez: Salve o dataset no arquivo novamente (pode ser o mesmo)
 
@@ -216,10 +239,9 @@ yDirect.df <- myChemicalsDisease.df[(myChemicalsDisease.df$verify_relationship
 
 # Sua vez: verifique a quantidade de registros (linhas) desse novo data frame
 
-
-eachChemical.df <- ddply(yDirect.df, .(chemical_name), nrow)  
-eachChemical.df <- arrange(eachChemical.df, desc(V1))
-top5Chemicals <- eachChemical.df[1:5,]; top5Chemicals
+eachChemical.df <- ddply(yDirect.df, .(chemical_name), nrow)  # Agrupa e conta a qntd de cada registro
+eachChemical.df <- arrange(eachChemical.df, desc(V1))         # Ordena
+top5Chemicals <- eachChemical.df[1:5,]; top5Chemicals         # Ver os top 5
 
 # Sua vez: Verifique o rank das doenças
 
@@ -229,11 +251,12 @@ dressColor.df <- read.csv('./data/dress_color.csv')
 
 # Explorando o dataframe
 summary(dressColor.df)
-colnames(dressColor.df); length(colnames(dressColor.df))
+colnames(dressColor.df)
+ncol(dressColor.df)
 nrow(dressColor.df)
 
-unique(dressColor.df$processed_color_combo)
-unique(dressColor.df$you)
+unique(dressColor.df$processed_color_combo)   # Quantas combinações únicas de cores
+unique(dressColor.df$you)                     # Quantos tipos de pessoas
 
 eachColorCombo.df <- dressColor.df %>% 
              ddply(.(processed_color_combo), nrow) %>%
@@ -281,10 +304,6 @@ inner[1] <- NULL      # Wojciech Sobala
 
 # Sua vez: agrupe e conte a quantidade de tipos de resoluções por estado 
 # Armazene numa variavel 'resolutionsFreq.df'
-
-resolutionsFreq.df <- inner %>% 
-  ddply(.(category, name), nrow) %>%
-  arrange(desc(V1))
 
 # Outro jeito de agrupar
 resolutionsFreq2.df <- data.frame(table(inner))
@@ -334,15 +353,7 @@ ggplot(resolutionsPercentCA,
   ) +
   theme_void() 
   
-## 44. Temperatura em Teresópolis ####
 
-## 5. Text emotion ####
-
-
-## 6. Gender classifier
-
-gender.df <- read.csv('./data/gender-classifier.csv')
-colnames(gender.df)
 
 
 
