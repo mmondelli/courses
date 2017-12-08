@@ -80,7 +80,9 @@ seq(10, -3, length.out = 9)       # Cria sequência (inicio e fim) e a quantidad
 # Dados aleatórios
 set.seed(1)                 # Gerador de números aleatórios
 x <- rnorm(100)             # Cria 100 números aleatórios (distribuição normal)
+x
 y <- runif(100)             # O mesmo, para outro tipo de distribuição
+y
 
 set.seed(5)
 sample(LETTERS[1:3], 12, replace=TRUE)         # Outra forma de criar dados aleatórios
