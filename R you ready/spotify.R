@@ -8,7 +8,9 @@ library(spotifyr)
 client_id <- 'b4a7e92fa4324534a3eee07f468fbf8b'
 client_secret <-'8dcc12391b684f21b38d1189d1d17003'
 client_tokens <- get_tokens()
-keys <- spotifyOAuth(client_tokens$access_token,
+client_tokens <- get_spotify_access_token(client_id, client_secret)
+keys <- spotifyOAuth(#client_tokens$access_token,
+                     client_tokens,
                      client_id,
                      client_secret)
 
