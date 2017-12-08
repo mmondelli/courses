@@ -39,7 +39,7 @@ set.seed(1234)
 set <- sample(2, nrow(votes), replace=TRUE, prob = c(0.75, 0.25))
 
 # Definir conjunto de treinamento
-votes.training <- votes[set==1, 1:17]
+votes.training <- votes[set==1, 1:16]
 
 head(votes.training)
 
@@ -84,6 +84,18 @@ erros <- nrow(votesTestLabels) - acertos
 acertos * 100 / nrow(votesTestLabels)
 
 ## Outro tipo de modelo
+install.packages('caret', dependencies = TRUE)
+library('caret')
+
+# Redefinir o conjunto de dados
+
+# Definir conjunto de treinamento
+votes.training <- votes[set==1, 1:17]
+
+head(votes.training)
+
+# Definir conjunto de teste
+votes.test <- votes[set==2, 1:17]
 
 # Random forest
 model <- train(Class ~ ., # Class é uma função das demais variáveis que queremos incluir
@@ -100,3 +112,4 @@ votes.test$Class <- predict(model, newdata = votes.test)
 acertos <- length(which(votes.test$Class == votes.result$Observado))
 erros <- nrow(votesTestLabels) - acertos
 acertos * 100 / nrow(votesTestLabels)
+
